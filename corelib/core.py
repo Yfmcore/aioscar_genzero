@@ -11,13 +11,14 @@ from datetime import datetime
 rootList = [] # enter here your telegram id
 botToken = '' # enter here your bot token
 codename = 'hotspring' # project's codename, don't keep in mind about that
-version = '0.1' # current core verison
+version = '0.2' # current core verison
 
 # everything to keep bot polling stable and correct
 logger = logging.getLogger(__name__)
 bot = Bot(token=botToken, parse_mode="HTML")
 dp = Dispatcher()
 StartTime = datetime.now()
+aioVersion = __version__
 
 # not done yet but WIP
 def isIgnoring(msg: Message):
@@ -56,7 +57,8 @@ class mt:
             
 
         async def isBotPromoted(msg = None):
-            botStatus = bot.id
+            botStatus = await bot.get_chat_member(msg.chat.id, bot.id)
+            print(botStatus.status)
             if botStatus.status in ["administrator", "creator"]:
                 return True  
 
@@ -66,13 +68,9 @@ class mt:
 
 
         def isPrivate(msg = None):
-            if msg.from_user.id == msg.chat.id:
+            if msg.chat.type == 'private':
                 return True
 
 
-        def isPrivateActive(msg = None):
+        def isBotActive(msg = None):
             pass # WIP
-
-
-        def isSubPaid(msg = None):
-            pass #WIP
